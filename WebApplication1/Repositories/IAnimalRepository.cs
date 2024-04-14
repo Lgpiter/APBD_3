@@ -1,6 +1,12 @@
-﻿namespace WebApplication1.Repositories;
+﻿using WebApplication1.Model;
 
-public class IAnimalRepository
+namespace WebApplication1.Repositories;
+
+public interface IAnimalRepository
 {
-    
+    IEnumerable<Animal> GetAnimals();
+    int CreateAnimal(Animal animal);
+    Animal Getanimal(int idAnimal);
+    int UpdateAnimal(Animal animal);
+    int DeleteAnimal(int idAnimal);
 }

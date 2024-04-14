@@ -1,27 +1,33 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Model;
+using WebApplication1.Services;
 
 namespace WebApplication1.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class AnimalController : Controller
 {
-    private readonly ILogger<AnimalController> _logger;
-
-    public AnimalController(ILogger<AnimalController> logger)
+    private IAnimalService _animalService;
+    
+    public AnimalController(IAnimalService animalService)
     {
-        _logger = logger;
+        _animalService = animalService;
     }
 
-    public IActionResult Index()
+    [HttpGet]
+    public IActionResult GetAnimal(int id)
     {
-        return View();
-    }
+        var animal = _animalService.GetAnimal();
 
-    public IActionResult Privacy()
-    {
-        return View();
+        if (animal==null)
+        {
+            return NotFound("Animal not found");
+        }
+        
+        return Ok(animal);
     }
-
+   
    
 }
