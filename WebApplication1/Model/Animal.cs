@@ -4,6 +4,7 @@ namespace WebApplication1.Model;
 
 public class Animal
 {
+    [Required]
     public int IdAnimal { get; set; }
     [Required]
     [MaxLength(200)]
@@ -12,7 +13,7 @@ public class Animal
     [MaxLength(200)]
     public string Description { get; set; }
     [Required]
-    [EmailAddress]
+    [MaxLength(200)]
     public string Category { get; set; }
     [Required]
     [MaxLength(200)]
