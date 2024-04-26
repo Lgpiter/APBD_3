@@ -7,32 +7,28 @@ namespace WebApplication1.Repositories;
 public class AnimalRepository : IAnimalRepository
 {
     private IConfiguration _configuration;
-    private string _connectionString;
+    
 
     public AnimalRepository(IConfiguration configuration)
     {
         _configuration = configuration;
         
-        //Do dokonczenia polaczenie z baza SQL
-        string strProject = "TBD"; 
-        string strDatabase = "TBD"; 
-        string strUserID = "TBD"; 
-        string strPassword = "TBD";
-        _connectionString = "data source=" + strProject +
-                            ";Persist Security Info=false;database=" + strDatabase +
-                            ";user id=" + strUserID + ";password=" +
-                            strPassword +
-                            ";Connection Timeout = 0;trustServerCertificate=true;";
     }
     
-    public IEnumerable<Animal> GetAnimals()
+    public IEnumerable<Animal> GetAnimals(String orderBy)
     {
-        using var con = new SqlConnection(_connectionString);
+        using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
         con.Open();
 
         using var cmd = new SqlCommand();
         cmd.Connection = con;
-        cmd.CommandText = "SELECT IdAnimal, Name, Description, Category, Area FROM Animals";
+        
+        if(orderBy == "")
+            cmd.CommandText = "SELECT IdAnimal, Name, Description, Category, Area FROM Animals ORDER BY Name";
+        else
+        {
+            cmd.CommandText = "SELECT IdAnimal, Name, Description, Category, Area FROM Animals ORDER BY @orderBy";
+        }
 
         var dr = cmd.ExecuteReader();
         var animals = new List<Animal>();
@@ -55,7 +51,7 @@ public class AnimalRepository : IAnimalRepository
 
     public int CreateAnimal(Animal animal)
     {
-        using var con = new SqlConnection(_connectionString);
+        using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
         con.Open();
 
         using var cmd = new SqlCommand();
@@ -73,7 +69,7 @@ public class AnimalRepository : IAnimalRepository
 
     public Animal GetAnimal(int idAnimal)
     {
-        using var con = new SqlConnection(_connectionString);
+        using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
         con.Open();
 
         using var cmd = new SqlCommand();
@@ -99,7 +95,7 @@ public class AnimalRepository : IAnimalRepository
     public int UpdateAnimal(Animal animal)
     {
         
-        using var con = new SqlConnection(_connectionString);
+        using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
         con.Open();
 
         using var cmd = new SqlCommand();
@@ -120,7 +116,7 @@ public class AnimalRepository : IAnimalRepository
 
     public int DeleteAnimal(int idAnimal)
     {
-        using var con = new SqlConnection(_connectionString);
+        using var con = new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
         con.Open();
         
         using var cmd = new SqlCommand();

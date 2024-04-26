@@ -23,7 +23,7 @@ public class AnimalController : ControllerBase
     [HttpGet]
     public IActionResult GetAnimals()
     {
-        var animals = _animalService.GetAnimals();
+        var animals = _animalService.GetAnimals("Area");
         return Ok(animals);
     }
     

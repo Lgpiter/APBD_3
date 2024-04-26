@@ -3,7 +3,7 @@ using WebApplication1.Model;
 
 public interface IAnimalService
 {
-    IEnumerable<Animal> GetAnimals();
+    IEnumerable<Animal> GetAnimals(String orderBy);
     int CreateAnimal(Animal animal);
     Animal? GetAnimal(int idAnimal);
     int UpdateAnimal(Animal animal);
